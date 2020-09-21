@@ -75,6 +75,78 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Teacher_Subject">
+          <End Role="Subject" Type="Self.Subject" Multiplicity="0..1" />
+          <End Role="Teacher" Type="Self.Teacher" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Subject">
+              <PropertyRef Name="SubjectId" />
+            </Principal>
+            <Dependent Role="Teacher">
+              <PropertyRef Name="SubjectId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TeacherLeaveCalendar_Teacher">
+          <End Role="Teacher" Type="Self.Teacher" Multiplicity="0..1" />
+          <End Role="TeacherLeaveCalendar" Type="Self.TeacherLeaveCalendar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Teacher">
+              <PropertyRef Name="TeacherId" />
+            </Principal>
+            <Dependent Role="TeacherLeaveCalendar">
+              <PropertyRef Name="TeacherId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TimeTableMapping_Class">
+          <End Role="Class" Type="Self.Class" Multiplicity="0..1" />
+          <End Role="TimeTableMapping" Type="Self.TimeTableMapping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Class">
+              <PropertyRef Name="ClassId" />
+            </Principal>
+            <Dependent Role="TimeTableMapping">
+              <PropertyRef Name="ClassId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TimeTableMapping_Period">
+          <End Role="PeriodTable" Type="Self.PeriodTable" Multiplicity="0..1" />
+          <End Role="TimeTableMapping" Type="Self.TimeTableMapping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PeriodTable">
+              <PropertyRef Name="PeriodId" />
+            </Principal>
+            <Dependent Role="TimeTableMapping">
+              <PropertyRef Name="PeriodId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TimeTableMapping_Teacher">
+          <End Role="Teacher" Type="Self.Teacher" Multiplicity="0..1" />
+          <End Role="TimeTableMapping" Type="Self.TimeTableMapping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Teacher">
+              <PropertyRef Name="TeacherId" />
+            </Principal>
+            <Dependent Role="TimeTableMapping">
+              <PropertyRef Name="TeacherId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TimeTableMapping_Teacher_CoveredBy">
+          <End Role="Teacher" Type="Self.Teacher" Multiplicity="0..1" />
+          <End Role="TimeTableMapping" Type="Self.TimeTableMapping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Teacher">
+              <PropertyRef Name="TeacherId" />
+            </Principal>
+            <Dependent Role="TimeTableMapping">
+              <PropertyRef Name="CoverdByTeacherId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="DbSchoolModelStoreContainer">
           <EntitySet Name="Class" EntityType="Self.Class" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="PeriodTable" EntityType="Self.PeriodTable" Schema="dbo" store:Type="Tables" />
@@ -86,6 +158,30 @@
           <AssociationSet Name="FK_Student_Class" Association="Self.FK_Student_Class">
             <End Role="Class" EntitySet="Class" />
             <End Role="Student" EntitySet="Student" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Teacher_Subject" Association="Self.FK_Teacher_Subject">
+            <End Role="Subject" EntitySet="Subject" />
+            <End Role="Teacher" EntitySet="Teacher" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TeacherLeaveCalendar_Teacher" Association="Self.FK_TeacherLeaveCalendar_Teacher">
+            <End Role="Teacher" EntitySet="Teacher" />
+            <End Role="TeacherLeaveCalendar" EntitySet="TeacherLeaveCalendar" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TimeTableMapping_Class" Association="Self.FK_TimeTableMapping_Class">
+            <End Role="Class" EntitySet="Class" />
+            <End Role="TimeTableMapping" EntitySet="TimeTableMapping" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TimeTableMapping_Period" Association="Self.FK_TimeTableMapping_Period">
+            <End Role="PeriodTable" EntitySet="PeriodTable" />
+            <End Role="TimeTableMapping" EntitySet="TimeTableMapping" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TimeTableMapping_Teacher" Association="Self.FK_TimeTableMapping_Teacher">
+            <End Role="Teacher" EntitySet="Teacher" />
+            <End Role="TimeTableMapping" EntitySet="TimeTableMapping" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TimeTableMapping_Teacher_CoveredBy" Association="Self.FK_TimeTableMapping_Teacher_CoveredBy">
+            <End Role="Teacher" EntitySet="Teacher" />
+            <End Role="TimeTableMapping" EntitySet="TimeTableMapping" />
           </AssociationSet>
         </EntityContainer>
       </Schema></edmx:StorageModels>
@@ -99,14 +195,16 @@
           <Property Name="ClassId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ClassDescription" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Students" Relationship="DbSchoolModel.FK_Student_Class" FromRole="Class" ToRole="Student" />
+          <NavigationProperty Name="TimeTableMappings" Relationship="DbSchoolModel.FK_TimeTableMapping_Class" FromRole="Class" ToRole="TimeTableMapping" />
         </EntityType>
         <EntityType Name="PeriodTable">
           <Key>
             <PropertyRef Name="PeriodId" />
           </Key>
           <Property Name="PeriodId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Day" Type="String" />
+          <Property Name="Day" Type="String" MaxLength="50" Unicode="false" FixedLength="false" />
           <Property Name="Time" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="TimeTableMappings" Relationship="DbSchoolModel.FK_TimeTableMapping_Period" FromRole="PeriodTable" ToRole="TimeTableMapping" />
         </EntityType>
         <EntityType Name="Student">
           <Key>
@@ -123,6 +221,7 @@
           </Key>
           <Property Name="SubjectId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="SubjectName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="Teachers" Relationship="DbSchoolModel.FK_Teacher_Subject" FromRole="Subject" ToRole="Teacher" />
         </EntityType>
         <EntityType Name="Teacher">
           <Key>
@@ -131,6 +230,10 @@
           <Property Name="TeacherId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="TeacherName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <Property Name="SubjectId" Type="Int32" />
+          <NavigationProperty Name="Subject" Relationship="DbSchoolModel.FK_Teacher_Subject" FromRole="Teacher" ToRole="Subject" />
+          <NavigationProperty Name="TeacherLeaveCalendars" Relationship="DbSchoolModel.FK_TeacherLeaveCalendar_Teacher" FromRole="Teacher" ToRole="TeacherLeaveCalendar" />
+          <NavigationProperty Name="TimeTableMappings" Relationship="DbSchoolModel.FK_TimeTableMapping_Teacher" FromRole="Teacher" ToRole="TimeTableMapping" />
+          <NavigationProperty Name="TimeTableMappings1" Relationship="DbSchoolModel.FK_TimeTableMapping_Teacher_CoveredBy" FromRole="Teacher" ToRole="TimeTableMapping" />
         </EntityType>
         <EntityType Name="TeacherLeaveCalendar">
           <Key>
@@ -140,6 +243,7 @@
           <Property Name="TeacherId" Type="Int32" />
           <Property Name="StartDate" Type="DateTime" Precision="0" />
           <Property Name="EndDate" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="Teacher" Relationship="DbSchoolModel.FK_TeacherLeaveCalendar_Teacher" FromRole="TeacherLeaveCalendar" ToRole="Teacher" />
         </EntityType>
         <EntityType Name="TimeTableMapping">
           <Key>
@@ -151,6 +255,10 @@
           <Property Name="PeriodId" Type="Int32" />
           <Property Name="CoverdByTeacherId" Type="Int32" />
           <Property Name="Recovered" Type="Boolean" />
+          <NavigationProperty Name="Class" Relationship="DbSchoolModel.FK_TimeTableMapping_Class" FromRole="TimeTableMapping" ToRole="Class" />
+          <NavigationProperty Name="PeriodTable" Relationship="DbSchoolModel.FK_TimeTableMapping_Period" FromRole="TimeTableMapping" ToRole="PeriodTable" />
+          <NavigationProperty Name="Teacher" Relationship="DbSchoolModel.FK_TimeTableMapping_Teacher" FromRole="TimeTableMapping" ToRole="Teacher" />
+          <NavigationProperty Name="Teacher1" Relationship="DbSchoolModel.FK_TimeTableMapping_Teacher_CoveredBy" FromRole="TimeTableMapping" ToRole="Teacher" />
         </EntityType>
         <EntityContainer Name="DbSchoolEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Classes" EntityType="Self.Class" />
@@ -164,6 +272,30 @@
             <End Role="Class" EntitySet="Classes" />
             <End Role="Student" EntitySet="Students" />
           </AssociationSet>
+          <AssociationSet Name="FK_Teacher_Subject" Association="DbSchoolModel.FK_Teacher_Subject">
+            <End Role="Subject" EntitySet="Subjects" />
+            <End Role="Teacher" EntitySet="Teachers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TeacherLeaveCalendar_Teacher" Association="DbSchoolModel.FK_TeacherLeaveCalendar_Teacher">
+            <End Role="Teacher" EntitySet="Teachers" />
+            <End Role="TeacherLeaveCalendar" EntitySet="TeacherLeaveCalendars" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TimeTableMapping_Class" Association="DbSchoolModel.FK_TimeTableMapping_Class">
+            <End Role="Class" EntitySet="Classes" />
+            <End Role="TimeTableMapping" EntitySet="TimeTableMappings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TimeTableMapping_Period" Association="DbSchoolModel.FK_TimeTableMapping_Period">
+            <End Role="PeriodTable" EntitySet="PeriodTables" />
+            <End Role="TimeTableMapping" EntitySet="TimeTableMappings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TimeTableMapping_Teacher" Association="DbSchoolModel.FK_TimeTableMapping_Teacher">
+            <End Role="Teacher" EntitySet="Teachers" />
+            <End Role="TimeTableMapping" EntitySet="TimeTableMappings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TimeTableMapping_Teacher_CoveredBy" Association="DbSchoolModel.FK_TimeTableMapping_Teacher_CoveredBy">
+            <End Role="Teacher" EntitySet="Teachers" />
+            <End Role="TimeTableMapping" EntitySet="TimeTableMappings" />
+          </AssociationSet>
         </EntityContainer>
         <Association Name="FK_Student_Class">
           <End Type="DbSchoolModel.Class" Role="Class" Multiplicity="0..1" />
@@ -174,6 +306,78 @@
             </Principal>
             <Dependent Role="Student">
               <PropertyRef Name="ClassId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Teacher_Subject">
+          <End Type="DbSchoolModel.Subject" Role="Subject" Multiplicity="0..1" />
+          <End Type="DbSchoolModel.Teacher" Role="Teacher" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Subject">
+              <PropertyRef Name="SubjectId" />
+            </Principal>
+            <Dependent Role="Teacher">
+              <PropertyRef Name="SubjectId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TeacherLeaveCalendar_Teacher">
+          <End Type="DbSchoolModel.Teacher" Role="Teacher" Multiplicity="0..1" />
+          <End Type="DbSchoolModel.TeacherLeaveCalendar" Role="TeacherLeaveCalendar" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Teacher">
+              <PropertyRef Name="TeacherId" />
+            </Principal>
+            <Dependent Role="TeacherLeaveCalendar">
+              <PropertyRef Name="TeacherId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TimeTableMapping_Class">
+          <End Type="DbSchoolModel.Class" Role="Class" Multiplicity="0..1" />
+          <End Type="DbSchoolModel.TimeTableMapping" Role="TimeTableMapping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Class">
+              <PropertyRef Name="ClassId" />
+            </Principal>
+            <Dependent Role="TimeTableMapping">
+              <PropertyRef Name="ClassId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TimeTableMapping_Period">
+          <End Type="DbSchoolModel.PeriodTable" Role="PeriodTable" Multiplicity="0..1" />
+          <End Type="DbSchoolModel.TimeTableMapping" Role="TimeTableMapping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PeriodTable">
+              <PropertyRef Name="PeriodId" />
+            </Principal>
+            <Dependent Role="TimeTableMapping">
+              <PropertyRef Name="PeriodId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TimeTableMapping_Teacher">
+          <End Type="DbSchoolModel.Teacher" Role="Teacher" Multiplicity="0..1" />
+          <End Type="DbSchoolModel.TimeTableMapping" Role="TimeTableMapping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Teacher">
+              <PropertyRef Name="TeacherId" />
+            </Principal>
+            <Dependent Role="TimeTableMapping">
+              <PropertyRef Name="TeacherId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TimeTableMapping_Teacher_CoveredBy">
+          <End Type="DbSchoolModel.Teacher" Role="Teacher" Multiplicity="0..1" />
+          <End Type="DbSchoolModel.TimeTableMapping" Role="TimeTableMapping" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Teacher">
+              <PropertyRef Name="TeacherId" />
+            </Principal>
+            <Dependent Role="TimeTableMapping">
+              <PropertyRef Name="CoverdByTeacherId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>

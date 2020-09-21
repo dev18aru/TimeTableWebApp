@@ -18,5 +18,7 @@ namespace AssignmentSchool
         public Nullable<int> TeacherId { get; set; }
         public Nullable<System.DateTime> StartDate { get; set; }
         public Nullable<System.DateTime> EndDate { get; set; }
+    
+        public virtual Teacher Teacher { get; set; }
     }
 }

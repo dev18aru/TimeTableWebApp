@@ -14,7 +14,16 @@ namespace AssignmentSchool
     
     public partial class Subject
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Subject()
+        {
+            this.Teachers = new HashSet<Teacher>();
+        }
+    
         public int SubjectId { get; set; }
         public string SubjectName { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Teacher> Teachers { get; set; }
     }
 }

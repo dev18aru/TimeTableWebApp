@@ -18,6 +18,7 @@ namespace AssignmentSchool
         public Class()
         {
             this.Students = new HashSet<Student>();
+            this.TimeTableMappings = new HashSet<TimeTableMapping>();
         }
     
         public int ClassId { get; set; }
@@ -25,5 +26,7 @@ namespace AssignmentSchool
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Student> Students { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<TimeTableMapping> TimeTableMappings { get; set; }
     }
 }

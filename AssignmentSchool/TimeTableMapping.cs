@@ -20,5 +20,10 @@ namespace AssignmentSchool
         public Nullable<int> PeriodId { get; set; }
         public Nullable<int> CoverdByTeacherId { get; set; }
         public Nullable<bool> Recovered { get; set; }
+    
+        public virtual Class Class { get; set; }
+        public virtual PeriodTable PeriodTable { get; set; }
+        public virtual Teacher Teacher { get; set; }
+        public virtual Teacher Teacher1 { get; set; }
     }
 }

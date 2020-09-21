@@ -13,6 +13,12 @@
         <EntityTypeShape EntityType="DbSchoolModel.TeacherLeaveCalendar" Width="1.5" PointX="4.75" PointY="3.75" IsExpanded="true" />
         <EntityTypeShape EntityType="DbSchoolModel.TimeTableMapping" Width="2.375" PointX="6.75" PointY="0.75" IsExpanded="true" />
         <AssociationConnector Association="DbSchoolModel.FK_Student_Class" />
+        <AssociationConnector Association="DbSchoolModel.FK_Teacher_Subject" />
+        <AssociationConnector Association="DbSchoolModel.FK_TeacherLeaveCalendar_Teacher" />
+        <AssociationConnector Association="DbSchoolModel.FK_TimeTableMapping_Class" />
+        <AssociationConnector Association="DbSchoolModel.FK_TimeTableMapping_Period" />
+        <AssociationConnector Association="DbSchoolModel.FK_TimeTableMapping_Teacher" />
+        <AssociationConnector Association="DbSchoolModel.FK_TimeTableMapping_Teacher_CoveredBy" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
