@@ -1,0 +1,2 @@
+08:24:02.075 Error from Class --- Test runtime exception AssignmentSchool    at AssignmentSchool.Data.ClassRepository.GetClassList() in C:\Workspace\TimeTableManager\AssignmentSchool\Data\ClassRepository.cs:line 28 
+ --------------------------------------------------

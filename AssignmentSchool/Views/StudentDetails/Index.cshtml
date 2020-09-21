@@ -1,0 +1,184 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+<!--Student drop down list-->
+<div style="margin-top:20px;">
+    <form>
+        <div class="form-group">
+            <label for="exampleInputEmail1">Class:</label>
+            <select class="form-control" id="select-class"></select>
+            <small id="emailHelp" class="form-text text-muted">Please select your class and submit to view your time table.</small>
+        </div>
+        <button id="btn-submit" type="button" class="btn btn-primary">Submit</button>
+    </form>
+</div>
+
+<!--Time Table-->
+<div style="margin-top: 30px;">
+    <h1 id="class-desc" style="visibility:hidden"><span>Class 7'A</span></h1>
+    <table id="tbl-time" >
+        <tr id="tr-days">
+            <th></th>
+            <th>Monday</th>
+            <th>Tuesday</th>
+            <th>WednesDay</th>
+            <th>Thursday</th>
+            <th>Friday</th>
+        </tr>
+        <tr id="tr-period1">
+            <td>8AM -9AM</td>
+            <td>Subject</td>
+            <td>Subject</td>
+            <td>Subject</td>
+            <td>Subject</td>
+            <td>Subject</td>
+        </tr>
+        <tr id="tr-period2">
+            <td>9AM -10AM</td>
+            <td>Subject</td>
+            <td>Subject</td>
+            <td>Subject</td>
+            <td>Subject</td>
+            <td>Subject</td>
+        </tr>
+        <tr id="tr-period3">
+            <td>11AM - 12PM</td>
+            <td>Subject</td>
+            <td>Subject</td>
+            <td>Subject</td>
+            <td>Subject</td>
+            <td>Subject</td>
+        </tr>
+        <tr id="tr-period4">
+            <td>12PM - 01PM</td>
+            <td>Subject</td>
+            <td>Subject</td>
+            <td>Subject</td>
+            <td>Subject</td>
+            <td>Subject</td>
+        </tr>
+    </table>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        //alert("success");
+        $("#class-desc").val('');
+        BindClassList();
+
+        $("#btn-submit").button().click(function () {
+            $("#class-desc").val('');
+
+            if ($("#select-class option:selected").text() == 'Your class') {
+                alert('Please select your class first and then submit.')
+                return;
+            }                
+            else
+            {
+                var selectedClassId = $("#select-class option:selected").val();
+                //Call ajax function to get time table details for selected class.
+                BindTimeTableByClass(selectedClassId);
+                $("#class-desc").val($("#select-class option:selected").text());
+                $("#class-desc").css("visibility", "visible");
+            }
+            
+        });
+
+        function BindTimeTableByClass(classId) {            
+            $.ajax({
+                url: '/api/StudentTimeTable/' + classId,
+                type: 'POST',                
+                success: function (result) {
+                    $.each(result, function (i, item) {
+                        var lable = '<h3>' + item.SubjectName + '</h3></br><h5>' + item.TeacherName + '</h5>';
+
+                        if (item.Day == 'Monday' && item.Time == '8AM - 9AM')                            
+                            $('#tbl-time tr:eq(1) td:eq(1)').html(lable);
+
+                        if (item.Day == 'Monday' && item.Time == '9AM - 10AM')                            
+                            $('#tbl-time tr:eq(2) td:eq(1)').html(lable);
+
+                        if (item.Day == 'Monday' && item.Time == '11AM  - 12PM')                            
+                            $('#tbl-time tr:eq(3) td:eq(1)').html(lable);
+
+                        if (item.Day == 'Monday' && item.Time == '12PM - 01PM')                            
+                            $('#tbl-time tr:eq(4) td:eq(1)').html(lable);
+
+                        if (item.Day == 'Tuesday' && item.Time == '8AM - 9AM')
+                            $('#tbl-time tr:eq(1) td:eq(2)').html(lable);
+
+                        if (item.Day == 'Tuesday' && item.Time == '9AM - 10AM')
+                            $('#tbl-time tr:eq(2) td:eq(2)').html(lable);
+
+                        if (item.Day == 'Tuesday' && item.Time == '11AM  - 12PM')
+                            $('#tbl-time tr:eq(3) td:eq(2)').html(lable);
+
+                        if (item.Day == 'Tuesday' && item.Time == '12PM - 01PM')
+                            $('#tbl-time tr:eq(4) td:eq(2)').html(lable);                      
+
+                        if (item.Day == 'Wednesday' && item.Time == '8AM - 9AM')
+                            $('#tbl-time tr:eq(1) td:eq(3)').html(lable);
+
+                        if (item.Day == 'Wednesday' && item.Time == '9AM - 10AM')
+                            $('#tbl-time tr:eq(2) td:eq(3)').html(lable);
+
+                        if (item.Day == 'Wednesday' && item.Time == '11AM  - 12PM')
+                            $('#tbl-time tr:eq(3) td:eq(3)').html(lable);
+
+                        if (item.Day == 'Wednesday' && item.Time == '12PM - 01PM')
+                            $('#tbl-time tr:eq(4) td:eq(3)').html(lable);
+
+                        if (item.Day == 'Thursday' && item.Time == '8AM - 9AM')
+                            $('#tbl-time tr:eq(1) td:eq(4)').html(lable);
+
+                        if (item.Day == 'Thursday' && item.Time == '9AM - 10AM')
+                            $('#tbl-time tr:eq(2) td:eq(4)').html(lable);
+
+                        if (item.Day == 'Thursday' && item.Time == '11AM  - 12PM')
+                            $('#tbl-time tr:eq(3) td:eq(4)').html(lable);
+
+                        if (item.Day == 'Thursday' && item.Time == '12PM - 01PM')
+                            $('#tbl-time tr:eq(4) td:eq(4)').html(lable);
+
+                        if (item.Day == 'Friday' && item.Time == '8AM - 9AM')
+                            $('#tbl-time tr:eq(1) td:eq(5)').html(lable);
+
+                        if (item.Day == 'Friday' && item.Time == '9AM - 10AM')
+                            $('#tbl-time tr:eq(2) td:eq(5)').html(lable);
+
+                        if (item.Day == 'Friday' && item.Time == '11AM  - 12PM')
+                            $('#tbl-time tr:eq(3) td:eq(5)').html(lable);
+
+                        if (item.Day == 'Friday' && item.Time == '12PM - 01PM')
+                            $('#tbl-time tr:eq(4) td:eq(5)').html(lable);
+                    });
+                },
+                error: function () {
+                    alert("error");
+                }
+            });
+        }
+    });
+
+    function BindClassList(){
+        $.ajax({
+            url: '/api/Class',
+            type: 'GET',            
+            dataType: "json",
+            success: function (result) {
+                var items = "";
+                items += "<option value='' disabled selected>Your class</option>";
+                $.each(result, function (i, item) {
+                    items += "<option value='" + item.ClassId + "'>" + (item.ClassDescription) + "</option>";
+                });
+                $("#select-class").html(items);
+            },
+            error: function () {
+                alert("error");
+            }
+        });
+
+       
+    }
+</script>

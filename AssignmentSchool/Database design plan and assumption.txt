@@ -1,0 +1,49 @@
+﻿TblClass
+--------
+ClassId
+ClassDescribtion
+
+TblStudents
+---------
+StudentId
+Name
+ClassId
+
+
+TblTeacher
+---------
+TeacherId
+Name 
+SubjectId
+
+
+
+TblSubject
+---------
+SubjectId
+SubjectDescription
+
+
+
+TblTimeTable
+------------
+TimeTableId(PK)  ClassId  TeacherId  Day    Time      CoveredBy (null)  Recovered
+1					1		100      Mon 	8-9        101              true
+2					1		101      Mon 	9-10       null  
+1					2		100      Mon  	10-11      Null
+1					1		104      Mon 	1-2        null
+ 
+1                   2       101      Tue    8-9        100              false
+1                   2       100      Tue    9-10       null 
+
+
+TblLeave
+----------
+tblleavid(PK) Teacherid StartDate     EndDate
+1				1			10 (Moday)  10 (Moday)
+
+
+
+
+
+

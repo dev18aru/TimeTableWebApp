@@ -1,0 +1,45 @@
+﻿<div class="jumbotron" style="text-align:center">
+    <h1>School Portal</h1>    
+</div>
+
+<div class="row" style="padding-bottom:150px;">
+    <div class="col-md-3"></div>
+    <div class="col-md-3">
+        <div class="card" style="width: 18rem; text-align:center">
+            @*<img src="..." class="card-img-top" alt="...">*@
+            <div class="card-body">
+                @*<h5 class="card-title">Card title</h5>*@
+                <p class="card-text">If you are a teacher, please click here to view your time table.</p>
+                <button id="teacher-intro" href="#" class="btn btn-primary">Teacher</button>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card" style="width: 18rem; text-align:center">
+            @*<img src="..." class="card-img-top" alt="...">*@
+            <div class="card-body">
+                @*<h5 class="card-title">Card title</h5>*@
+                <p class="card-text">If you are a student, please click here to view your time table.</p>
+                <button id="student-intro" href="#" class="btn btn-primary">Student</button>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3"></div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function(){
+        //alert("success");
+        //redirect to teacher detail page.
+        $("#teacher-intro").button().click(function () {            
+            var url = "/TeacherDetails/Index";
+            window.location.href = url;
+        });
+
+        //redirect to student detail page.
+        $("#student-intro").button().click(function () {            
+            var url = "/StudentDetails/Index";
+            window.location.href = url;
+        });
+});
+</script>
