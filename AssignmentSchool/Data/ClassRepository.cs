@@ -61,9 +61,6 @@ namespace AssignmentSchool.Data
                 LogTracker.Error(exception,"Class");
                 throw exception;
             }
-
         }
-
-
     }
 }
