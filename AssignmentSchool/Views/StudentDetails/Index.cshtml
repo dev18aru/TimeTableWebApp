@@ -16,7 +16,7 @@
 
 <!--Time Table-->
 <div style="margin-top: 30px;">
-    <h1 id="class-desc" style="visibility:hidden"><span>Class 7'A</span></h1>
+    <h1 id="class-desc"></h1>
     <table id="tbl-time" >
         <tr id="tr-days">
             <th></th>
@@ -63,8 +63,7 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
-        //alert("success");
-        $("#class-desc").val('');
+        //alert("success");        
         BindClassList();
 
         $("#btn-submit").button().click(function () {
@@ -74,22 +73,23 @@
                 alert('Please select your class first and then submit.')
                 return;
             }                
-            else
-            {
+            else{
                 var selectedClassId = $("#select-class option:selected").val();
+                var selectedClass = $("#select-class option:selected").text();
+
                 //Call ajax function to get time table details for selected class.
-                BindTimeTableByClass(selectedClassId);
-                $("#class-desc").val($("#select-class option:selected").text());
-                $("#class-desc").css("visibility", "visible");
-            }
-            
+                BindTimeTableByClass(selectedClassId, selectedClass);
+            }            
         });
 
-        function BindTimeTableByClass(classId) {            
+        function BindTimeTableByClass(classId,className) {            
             $.ajax({
                 url: '/api/StudentTimeTable/' + classId,
                 type: 'POST',                
                 success: function (result) {
+                    //change selected class description
+                    $("#class-desc").text(className);
+
                     $.each(result, function (i, item) {
                         var lable = '<h3>' + item.SubjectName + '</h3></br><h5>' + item.TeacherName + '</h5>';
 
@@ -177,8 +177,6 @@
             error: function () {
                 alert("error");
             }
-        });
-
-       
+        });       
     }
 </script>
